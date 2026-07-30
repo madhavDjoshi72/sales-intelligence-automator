@@ -1,0 +1,19 @@
+# Environment
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Editor backups
+.env.swp
+*.swp
+.vscode/
+.idea/
+
+# pytest
+.cache/
+
+# OS files
+.DS_Store
