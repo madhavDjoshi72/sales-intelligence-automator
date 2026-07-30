@@ -53,9 +53,18 @@ python app.py
 
 This uses a simple built-in heuristic analyzer and does not call Google Gemini. The output is less accurate than Gemini, but it works without billing.
 
+## Design Notes
+
+- Architecture overview: lead input → URL resolution → scraping → LLM analysis → Pydantic validation → SQLite/JSON storage → Flask UI.
+- Gemini was chosen because it offers a free tier and generally produces reliable JSON output for structured briefs; Flask was chosen because it is simple and fast to prototype with.
+- Strict JSON output is enforced with a system prompt schema, Pydantic validation, and one retry where the prior error is fed back to the model.
+- Known edge cases handled: JS-redirect pages, parked/expired domains, Cloudflare-style bot walls, and name-only leads with no URL.
+- Known limitations: name-only lead resolution is currently a heuristic guess based on the company-name.com pattern when search-based resolution fails, rather than a true search engine lookup.
+- What I'd improve with more time: real search-based lead resolution, Playwright for more JS-heavy sites, and more robust retry handling for rate limits.
+
 ## Static output report
 
-If you cannot access the web UI, you can generate a standalone HTML report instead:
+If you cannot access the web UI, you can use generate_sample_report.py as an optional offline report generator to create a standalone HTML report instead:
 
 ```bash
 python generate_sample_report.py

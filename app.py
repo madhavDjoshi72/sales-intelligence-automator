@@ -2,8 +2,11 @@ import os
 import re
 import json
 
+import requests
+from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, redirect, url_for
+from urllib.parse import urljoin, urlparse
 
 load_dotenv(dotenv_path=".env")
 
@@ -38,6 +41,64 @@ def _save_saved_briefs() -> None:
 saved_briefs: list[dict] = _load_saved_briefs()
 
 URL_LIKE_PATTERN = re.compile(r"^(https?://|www\.)", re.IGNORECASE)
+SEARCH_EXCLUDED_DOMAINS = {
+    "duckduckgo.com",
+    "google.com",
+    "bing.com",
+    "yahoo.com",
+    "yelp.com",
+    "bbb.org",
+    "yellowpages.com",
+    "facebook.com",
+    "instagram.com",
+    "twitter.com",
+    "x.com",
+    "linkedin.com",
+    "youtube.com",
+    "tiktok.com",
+    "reddit.com",
+    "quora.com",
+}
+
+
+def _is_excluded_domain(url: str) -> bool:
+    hostname = urlparse(url).hostname or ""
+    hostname = hostname.lower().removeprefix("www.")
+    if not hostname:
+        return True
+    return any(hostname == domain or hostname.endswith(f".{domain}") for domain in SEARCH_EXCLUDED_DOMAINS)
+
+
+def _search_for_lead_url(query: str) -> str | None:
+    try:
+        response = requests.get(
+            "https://html.duckduckgo.com/html/",
+            params={"q": query, "kl": "us-en"},
+            headers={"User-Agent": "Mozilla/5.0"},
+            timeout=8,
+        )
+        response.raise_for_status()
+    except requests.RequestException:
+        return None
+
+    soup = BeautifulSoup(response.text, "html.parser")
+    for anchor in soup.select("a.result__a"):
+        href = anchor.get("href")
+        if not href:
+            continue
+        candidate = urljoin("https://html.duckduckgo.com/html/", href)
+        if not _is_excluded_domain(candidate):
+            return candidate
+
+    for anchor in soup.find_all("a", href=True):
+        href = anchor.get("href")
+        if not href:
+            continue
+        candidate = urljoin("https://html.duckduckgo.com/html/", href)
+        if candidate.startswith("http") and not _is_excluded_domain(candidate):
+            return candidate
+
+    return None
 
 
 def _guess_url_from_name(text: str) -> str | None:
@@ -50,6 +111,10 @@ def _guess_url_from_name(text: str) -> str | None:
 
     if "." in text and " " not in text:
         return f"https://{text}"
+
+    search_result = _search_for_lead_url(text)
+    if search_result:
+        return search_result
 
     cleaned = re.sub(r"[^\w\s-]", "", text.lower())
     cleaned = re.sub(r"[\s_]+", "-", cleaned).strip("-")

@@ -29,6 +29,20 @@ MIN_CONTENT_LENGTH = 300
 JS_REDIRECT_PATTERN = re.compile(
     r"window\.location(?:\.href)?\s*=\s*['\"]([^'\"]+)['\"]", re.IGNORECASE
 )
+PARKED_HINTS = [
+    "domain may be for sale",
+    "domain is for sale",
+    "this domain is parked",
+    "this site is parked",
+    "parked domain",
+    "parked page",
+    "expired domain",
+    "access denied",
+    "temporarily unavailable",
+    "domain has expired",
+    "this domain may be for sale",
+    "for sale",
+]
 
 
 def _http_get(url: str, timeout: int = 10) -> str | None:
@@ -107,10 +121,22 @@ def clean_text(html: str, max_chars: int = 6000) -> str:
     return text[:max_chars]
 
 
+def _looks_like_parked_or_blocked_page(html: str) -> bool:
+    if not html:
+        return False
+    text = re.sub(r"<[^>]+>", " ", html)
+    text = re.sub(r"\s+", " ", text).lower()
+    if not text:
+        return False
+    return any(hint in text for hint in PARKED_HINTS)
+
+
 def scrape_lead(url: str) -> str | None:
     """Fetch + clean a single URL. Returns cleaned text, or None if fetch failed."""
     html = fetch_page(url)
     if not html:
+        return None
+    if _looks_like_parked_or_blocked_page(html):
         return None
     return clean_text(html)
 
