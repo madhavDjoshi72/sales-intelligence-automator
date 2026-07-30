@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sales Intelligence Automator</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+      <div class="container">
+        <a class="navbar-brand fw-semibold" href="#">Sales Intelligence Automator</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ms-auto align-items-center mb-2 mb-lg-0 gap-2">
+            <li class="nav-item">
+              <a class="nav-link" href="#leads">Input</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/results">Saved Results</a>
+            </li>
+            <li class="nav-item">
+              <button class="btn btn-sm btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#helpCollapse" aria-expanded="false" aria-controls="helpCollapse">
+                How it works
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container py-4">
+    <div class="collapse mb-4" id="helpCollapse">
+      <div class="card card-body bg-white border-primary-subtle shadow-sm">
+        <strong>How it works:</strong>
+        <p class="mb-0">Enter one lead per line, either a website URL or a company name. The app fetches website text, analyzes it, and generates sales-focused brief details using AI or local fallback mode.</p>
+      </div>
+    </div>
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h1 class="h3 mb-2">Sales Intelligence Automator</h1>
+        <p class="text-muted mb-4">Paste one lead per line — a website URL or a company name/description.</p>
+
+        {% if free_mode %}
+        <div class="alert alert-warning" role="alert">
+          Free local mode is active. No Gemini API calls will be made, and output is generated using a simple heuristic fallback.
+        </div>
+        {% endif %}
+        <form action="/run" method="post">
+          <div class="mb-3">
+            <label for="leads" class="form-label">Leads</label>
+            <textarea id="leads" name="leads" class="form-control" rows="12">https://www.houstonroofingonline.com
+BrightPlay Turf - Artificial Turf & Landscaping, Chicago IL
+https://www.springhilllandscaping.com
+Joe's Backyard Landscaping - Phoenix AZ
+https://www.centraltexasbarkery.com
+Sunrise Plumbing & Drain Services - Tampa FL
+https://www.denverlockandsafe.com
+Green Leaf Lawn Care - Columbus OH
+https://www.redtruckbakery.com
+Blue Ridge HVAC Services - Roanoke VA
+Acme Roofing & Construction - Dallas TX
+https://www.bostonplumbing.com
+Pacific Northwest Tree Care - Portland OR
+Maple Street Auto Repair - Madison WI
+https://www.piedmontmoving.com</textarea>
+          </div>
+          <div class="mb-3 text-muted">Name-only leads are resolved to a likely website automatically; if scraping fails, the LLM analyzes from the name alone and flags it in the notes.</div>
+          <div class="d-flex gap-2 flex-wrap">
+            <button type="submit" class="btn btn-primary">Run Analysis</button>
+            <a class="btn btn-outline-secondary" href="/results">View saved results</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container py-3 text-center text-muted small">
+      Built by <strong>Madhav Joshi</strong> • Sales Intelligence Automator
+      <div class="mt-1">I’m excited to help you turn leads into revenue!</div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const textarea = document.querySelector('textarea#leads');
+      if (textarea) {
+        const resize = () => {
+          textarea.style.height = 'auto';
+          textarea.style.height = `${textarea.scrollHeight}px`;
+        };
+        textarea.addEventListener('input', resize);
+        resize();
+      }
+    });
+  </script>
+</body>
+</html>

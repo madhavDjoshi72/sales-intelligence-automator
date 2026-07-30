@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sales Briefs - Results</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 1100px; margin: 40px auto; padding: 0 20px; color: #222; }
+  h1 { font-size: 1.5rem; }
+  .summary { color: #444; margin-bottom: 16px; }
+  a.back { color: #2563eb; text-decoration: none; }
+  table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+  th, td { border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: top; font-size: 0.9rem; }
+  th { background: #f3f4f6; }
+  .yes { color: #15803d; font-weight: bold; }
+  .no { color: #b91c1c; font-weight: bold; }
+  ul.questions { margin: 0; padding-left: 18px; }
+  .notes { color: #888; font-size: 0.8rem; }
+  form.clear-form { margin-top: 20px; }
+  button.clear-btn { background: #b91c1c; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; }
+</style>
+</head>
+<body>
+  <a class="back" href="/">&larr; Back to input</a>
+  <h1>Sales Briefs</h1>
+
+  {% if processed is not none %}
+  <p class="summary">Just ran: {{ processed }} processed successfully{% if failed and failed != '0' %}, {{ failed }} failed{% endif %}.</p>
+  {% endif %}
+
+  {% if briefs %}
+  <table>
+    <tr>
+      <th>Lead</th>
+      <th>Overview</th>
+      <th>Product/Service</th>
+      <th>Target Customer</th>
+      <th>B2B?</th>
+      <th>Sales Questions</th>
+    </tr>
+    {% for b in briefs %}
+    <tr>
+      <td><strong>{{ b.company_name }}</strong><br><span class="notes">{{ b._lead_label }}</span></td>
+      <td>{{ b.company_overview }}</td>
+      <td>{{ b.core_product_or_service }}</td>
+      <td>{{ b.target_customer }}</td>
+      <td class="{{ 'yes' if b.is_b2b_lead else 'no' }}">
+        {{ 'Yes' if b.is_b2b_lead else 'No' }}<br>
+        <span class="notes">{{ b.b2b_reasoning }}</span>
+      </td>
+      <td>
+        <ul class="questions">
+          {% for q in b.sales_questions %}
+          <li>{{ q }}</li>
+          {% endfor %}
+        </ul>
+        {% if b.notes %}<div class="notes">Note: {{ b.notes }}</div>{% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <form class="clear-form" action="/clear" method="post" onsubmit="return confirm('Clear all saved results?');">
+    <button class="clear-btn" type="submit">Clear all results</button>
+  </form>
+  {% else %}
+  <p>No results yet. Go back and run an analysis.</p>
+  {% endif %}
+</body>
+</html>

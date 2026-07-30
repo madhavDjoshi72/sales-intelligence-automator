@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sales Briefs - Results</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+      <div class="container">
+        <a class="navbar-brand fw-semibold" href="/">Sales Intelligence Automator</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ms-auto align-items-center mb-2 mb-lg-0 gap-2">
+            <li class="nav-item">
+              <a class="nav-link" href="/">Input</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#sales-results">Results</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container py-4" id="sales-results">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <a class="btn btn-outline-secondary" href="/">&larr; Back to input</a>
+      <h1 class="h4 mb-0">Sales Briefs</h1>
+    </div>
+
+    {% if processed is not none %}
+    <div class="alert alert-info" role="alert">
+      Just ran: <strong>{{ processed }}</strong> processed successfully{% if failed and failed != '0' %}, <strong>{{ failed }}</strong> failed{% endif %}.
+    </div>
+    {% endif %}
+
+    {% if free_mode %}
+    <div class="alert alert-warning" role="alert">
+      Free local mode is active. Results are generated without Gemini and are based on a heuristic fallback.
+    </div>
+    {% endif %}
+
+    {% if error_message %}
+    <div class="alert alert-warning" role="alert">
+      {{ error_message }}
+    </div>
+    {% endif %}
+
+    {% if briefs %}
+    <div class="table-responsive">
+      <table class="table table-striped align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Lead</th>
+            <th>Overview</th>
+            <th>Product/Service</th>
+            <th>Target Customer</th>
+            <th>B2B?</th>
+            <th>Sales Questions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for b in briefs %}
+          <tr>
+            <td>
+              <strong>{{ b.company_name }}</strong><br>
+              <span class="notes">{{ b._lead_label }}</span>
+            </td>
+            <td>{{ b.company_overview }}</td>
+            <td>{{ b.core_product_or_service }}</td>
+            <td>{{ b.target_customer }}</td>
+            <td>
+              <span class="badge bg-{{ 'success' if b.is_b2b_lead else 'danger' }}">
+                {{ 'Yes' if b.is_b2b_lead else 'No' }}
+              </span>
+              <div class="notes mt-2">{{ b.b2b_reasoning }}</div>
+            </td>
+            <td>
+              <ul class="questions mb-2">
+                {% for q in b.sales_questions %}
+                <li>{{ q }}</li>
+                {% endfor %}
+              </ul>
+              {% if b.notes %}<div class="notes">Note: {{ b.notes }}</div>{% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <form class="mt-3" action="/clear" method="post" onsubmit="return confirm('Clear all saved results?');">
+      <button class="btn btn-danger" type="submit">Clear all results</button>
+    </form>
+    {% else %}
+    <div class="alert alert-secondary">No results yet. Go back and run an analysis.</div>
+    {% endif %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container py-3 text-center text-muted small">
+      Built by <strong>Madhav Joshi</strong> • Sales Intelligence Automator
+      <div class="mt-1">I’m excited to help you turn leads into revenue!</div>
+    </div>
+  </footer>
+
+  <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100;">
+    <div id="pageToast" class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+      <div class="d-flex">
+        <div class="toast-body">Results loaded successfully.</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const toastEl = document.getElementById('pageToast');
+      if (toastEl && {{ 'true' if processed is not none else 'false' }}) {
+        const toast = new bootstrap.Toast(toastEl);
+        toast.show();
+      }
+    });
+  </script>

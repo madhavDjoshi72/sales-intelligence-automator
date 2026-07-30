@@ -1,0 +1,130 @@
+[
+  {
+    "company_name": "Austin Commercial Roofing",
+    "company_overview": "A roofing contractor based in Austin specializing in commercial-grade roofing installations, repairs, and maintenance. They focus on serving business facilities and large-scale industrial properties.",
+    "core_product_or_service": "Commercial roofing services (installation, repair, and maintenance)",
+    "target_customer": "Commercial property owners, facility managers, and business owners",
+    "is_b2b_lead": true,
+    "b2b_reasoning": "The company explicitly targets the commercial sector, meaning their primary clientele consists of other businesses rather than individual homeowners.",
+    "sales_questions": [
+      "What is the typical square footage of the commercial projects you currently manage?",
+      "Do you prioritize long-term preventative maintenance contracts or one-off emergency repair projects?",
+      "What specific roofing systems (e.g., TPO, EPDM, Metal) are you seeing the highest demand for in the Austin market right now?"
+    ],
+    "source_url": "https://www.austincommercialroofing.com",
+    "notes": "Website content could not be retrieved; information is inferred based on the company name and industry standards.",
+    "_lead_label": "https://www.austincommercialroofing.com"
+  },
+  {
+    "company_name": "Blue Horizon Landscaping",
+    "company_overview": "Blue Horizon Landscaping is a professional landscaping and grounds maintenance service provider based in San Diego, California. The company likely offers design, installation, and upkeep services for properties in the region.",
+    "core_product_or_service": "Landscaping and grounds maintenance services",
+    "target_customer": "Residential homeowners and commercial property managers in San Diego",
+    "is_b2b_lead": true,
+    "b2b_reasoning": "While the company serves residential clients, landscaping firms frequently contract with commercial businesses, HOAs, and property management firms for B2B recurring service agreements.",
+    "sales_questions": [
+      "What percentage of your current client base consists of commercial or multi-family property management contracts?",
+      "Are you currently looking to automate your scheduling or crew management workflows to handle larger commercial accounts?",
+      "What are your primary pain points when scaling operations for high-maintenance commercial landscapes versus residential properties?"
+    ],
+    "source_url": null,
+    "notes": "No website content was provided; analysis is based on industry standards for landscaping companies of this nature.",
+    "_lead_label": "Blue Horizon Landscaping - San Diego CA"
+  },
+  {
+    "company_name": "Houston HVAC Services",
+    "company_overview": "Houston HVAC Services is a family-owned HVAC repair company based in Houston that specializes in residential air conditioning and heating system maintenance. They prioritize customer convenience through phone-based troubleshooting and rapid on-site emergency repair services.",
+    "core_product_or_service": "Residential HVAC repair and maintenance services",
+    "target_customer": "Homeowners in the Houston area",
+    "is_b2b_lead": false,
+    "b2b_reasoning": "The website explicitly markets services to homeowners and focuses on residential AC repair, making it a B2C business rather than a B2B lead.",
+    "sales_questions": [
+      "Are you currently looking to outsource your lead generation or digital marketing efforts to grow your residential customer base?",
+      "Do you use a specific CRM or field service management software to track your residential service calls and customer follow-ups?",
+      "Are you interested in partnerships with local property management firms to expand into commercial maintenance contracts?"
+    ],
+    "source_url": "https://www.houstonhvacservices.com",
+    "notes": null,
+    "_lead_label": "https://www.houstonhvacservices.com"
+  },
+  {
+    "company_name": "Premier Auto Care Center",
+    "company_overview": "A local automotive repair and maintenance facility located in Tampa, Florida. They provide general vehicle services to the local community.",
+    "core_product_or_service": "Automotive repair and maintenance",
+    "target_customer": "Individual vehicle owners in the Tampa area",
+    "is_b2b_lead": false,
+    "b2b_reasoning": "The business operates as a local B2C service provider for individual car owners, though they could potentially be a lead for fleet maintenance services.",
+    "sales_questions": [
+      "Do you currently offer dedicated fleet management services for local businesses with company vehicles?",
+      "How do you manage your customer scheduling and parts inventory systems?",
+      "Are you looking to expand your service offerings to include B2B commercial accounts in the Tampa area?"
+    ],
+    "source_url": null,
+    "notes": "No website content available; business profile inferred from name and industry standards.",
+    "_lead_label": "Premier Auto Care Center - Tampa FL"
+  },
+  {
+    "company_name": "Charlotte Plumbing Pros",
+    "company_overview": "Charlotte Plumbing Pros is a full-service plumbing company providing 24/7 emergency repairs and installations for both residential and commercial clients. They operate across the Charlotte metropolitan area, handling everything from routine drain cleaning to complex sewer line and fire suppression system maintenance.",
+    "core_product_or_service": "Emergency plumbing repair and installation services",
+    "target_customer": "Residential homeowners and commercial business owners in the Charlotte, NC metro area",
+    "is_b2b_lead": true,
+    "b2b_reasoning": "The company explicitly markets its services to commercial businesses, including specific offerings like fire suppression system installation and maintenance for commercial properties.",
+    "sales_questions": [
+      "Do you currently have a preventative maintenance program for commercial property managers or facility owners?",
+      "How do you handle large-scale commercial contracts versus individual emergency service calls?",
+      "Are you looking to expand your commercial client base or partnership network with local property management firms?"
+    ],
+    "source_url": "https://www.charlotteplumbingpros.com",
+    "notes": null,
+    "_lead_label": "https://www.charlotteplumbingpros.com"
+  },
+  {
+    "company_name": "Pacific Northwest Tree Care",
+    "company_overview": "Pacific Northwest Tree Care is a professional arboricultural service provider based in Portland, Oregon. They likely offer tree maintenance, pruning, removal, and health assessments for residential and commercial properties.",
+    "core_product_or_service": "Arboriculture and tree maintenance services",
+    "target_customer": "Residential homeowners, property managers, and commercial business owners in the Portland area",
+    "is_b2b_lead": true,
+    "b2b_reasoning": "While they serve residential clients, the business model includes potential recurring contracts with property management firms, HOAs, and commercial real estate developers.",
+    "sales_questions": [
+      "How much of your current revenue is derived from commercial contracts versus residential jobs?",
+      "What is your current process for managing maintenance schedules for large-scale property management accounts?",
+      "Are you looking to expand your footprint into large commercial landscaping or municipal infrastructure projects?"
+    ],
+    "source_url": null,
+    "notes": "No website content available; company profile inferred strictly from the business name and location.",
+    "_lead_label": "Pacific Northwest Tree Care - Portland OR"
+  },
+  {
+    "company_name": "Maple Street Auto Repair",
+    "company_overview": "A local automotive repair shop based in Madison, Wisconsin, providing vehicle maintenance and repair services. The company likely services private individuals and potentially local businesses with vehicle fleets.",
+    "core_product_or_service": "Automotive repair and maintenance services",
+    "target_customer": "Local vehicle owners and potentially small business fleet owners",
+    "is_b2b_lead": true,
+    "b2b_reasoning": "While primarily B2C, auto repair shops often provide fleet maintenance services for other local businesses, making them potential prospects for B2B vendors such as parts suppliers, CRM software providers, or local advertising platforms.",
+    "sales_questions": [
+      "Do you currently provide dedicated fleet maintenance programs for other local businesses?",
+      "What is your primary method for managing customer service records and maintenance schedules?",
+      "Are you looking to expand your shop's reach to include more commercial or B2B client contracts?"
+    ],
+    "source_url": null,
+    "notes": "Data was limited to the company name and location; analysis is based on typical industry operations for local auto repair shops.",
+    "_lead_label": "Maple Street Auto Repair - Madison WI"
+  },
+  {
+    "company_name": "Piedmont Moving Systems",
+    "company_overview": "Piedmont Moving Systems is a Bay Area-based logistics and storage provider specializing in the secure transportation and warehousing of high-value commercial assets. They support specialized industries including healthcare, biotech, and high-tech sectors with ISO 9001:2015 certified processes.",
+    "core_product_or_service": "Commercial logistics, high-value asset storage, and specialized industrial equipment relocation.",
+    "target_customer": "Commercial enterprises, healthcare facilities, biotech labs, and tech companies requiring secure logistics and supply chain management.",
+    "is_b2b_lead": true,
+    "b2b_reasoning": "The company explicitly markets itself as a commercial-only logistics partner, citing specific B2B services like inventory management, lab equipment relocation, and corporate warehousing.",
+    "sales_questions": [
+      "How does your current logistics workflow handle the specific regulatory or security requirements of your high-value assets?",
+      "Are you currently facing any capacity constraints or security gaps in your existing storage or supply chain infrastructure?",
+      "What criteria are most critical for your team when evaluating a logistics partner for your upcoming relocation or storage projects?"
+    ],
+    "source_url": "https://www.piedmontmoving.com",
+    "notes": null,
+    "_lead_label": "https://www.piedmontmoving.com"
+  }
+]
