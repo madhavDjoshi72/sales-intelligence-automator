@@ -127,6 +127,36 @@ def _prepare_leads(raw: str) -> list[str]:
     return [line.strip() for line in raw.splitlines() if line.strip()]
 
 
+def _normalize_brief_data(brief_data: dict) -> dict:
+    company_name = str(brief_data.get("company_name") or "Unknown company").strip()
+    overview = str(brief_data.get("company_overview") or "No overview available.").strip()
+    product = str(brief_data.get("core_product_or_service") or "No product/service summary available.").strip()
+    target_customer = str(brief_data.get("target_customer") or "No target customer identified.").strip()
+    reasoning = str(brief_data.get("b2b_reasoning") or "No reasoning provided.").strip()
+    notes = brief_data.get("notes")
+    notes = str(notes).strip() if notes else None
+
+    questions = brief_data.get("sales_questions") or []
+    if isinstance(questions, str):
+        questions = [questions]
+    else:
+        questions = [str(q).strip() for q in questions if str(q).strip()]
+    if not questions:
+        questions = ["No sales questions were generated."]
+
+    return {
+        "company_name": company_name,
+        "company_overview": overview,
+        "core_product_or_service": product,
+        "target_customer": target_customer,
+        "is_b2b_lead": bool(brief_data.get("is_b2b_lead", False)),
+        "b2b_reasoning": reasoning,
+        "sales_questions": questions,
+        "source_url": brief_data.get("source_url"),
+        "notes": notes,
+    }
+
+
 @app.route("/", methods=["GET"])
 def index():
     return render_template("index.html", free_mode=FREE_MODE)
@@ -170,7 +200,7 @@ def run_analysis():
             failed += 1
             continue
 
-        brief_data = result.model_dump()
+        brief_data = _normalize_brief_data(result.model_dump())
         brief_data["_lead_label"] = lead
         saved_briefs.append(brief_data)
         _save_saved_briefs()
