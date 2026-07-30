@@ -4,6 +4,7 @@ import json
 
 import requests
 from bs4 import BeautifulSoup
+from ddgs import DDGS
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, redirect, url_for
 from urllib.parse import urljoin, urlparse
@@ -70,31 +71,45 @@ def _is_excluded_domain(url: str) -> bool:
 
 
 def _search_for_lead_url(query: str) -> str | None:
+    browser_user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+
     try:
-        response = requests.get(
+        response = requests.post(
             "https://html.duckduckgo.com/html/",
-            params={"q": query, "kl": "us-en"},
-            headers={"User-Agent": "Mozilla/5.0"},
+            data={"q": query, "kl": "us-en"},
+            headers={"User-Agent": browser_user_agent},
             timeout=8,
         )
         response.raise_for_status()
     except requests.RequestException:
+        response = None
+
+    if response is not None:
+        soup = BeautifulSoup(response.text, "html.parser")
+        for anchor in soup.select("a.result__a"):
+            href = anchor.get("href")
+            if not href:
+                continue
+            candidate = urljoin("https://html.duckduckgo.com/html/", href)
+            if not _is_excluded_domain(candidate):
+                return candidate
+
+        for anchor in soup.find_all("a", href=True):
+            href = anchor.get("href")
+            if not href:
+                continue
+            candidate = urljoin("https://html.duckduckgo.com/html/", href)
+            if candidate.startswith("http") and not _is_excluded_domain(candidate):
+                return candidate
+
+    try:
+        with DDGS() as ddgs:
+            results = list(ddgs.text(query, max_results=5))
+    except Exception:
         return None
 
-    soup = BeautifulSoup(response.text, "html.parser")
-    for anchor in soup.select("a.result__a"):
-        href = anchor.get("href")
-        if not href:
-            continue
-        candidate = urljoin("https://html.duckduckgo.com/html/", href)
-        if not _is_excluded_domain(candidate):
-            return candidate
-
-    for anchor in soup.find_all("a", href=True):
-        href = anchor.get("href")
-        if not href:
-            continue
-        candidate = urljoin("https://html.duckduckgo.com/html/", href)
+    for result in results:
+        candidate = str(result.get("href", "")).strip()
         if candidate.startswith("http") and not _is_excluded_domain(candidate):
             return candidate
 
@@ -180,9 +195,8 @@ def run_analysis():
         else:
             guessed = _guess_url_from_name(lead)
             if guessed:
+                source_url = guessed
                 scraped_text = scrape_lead(guessed)
-                if scraped_text:
-                    source_url = guessed
 
         try:
             result = analyze_lead(lead_label=lead, scraped_text=scraped_text, source_url=source_url)

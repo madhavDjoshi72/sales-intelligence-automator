@@ -59,8 +59,8 @@ This uses a simple built-in heuristic analyzer and does not call Google Gemini. 
 - Gemini was chosen because it offers a free tier and generally produces reliable JSON output for structured briefs; Flask was chosen because it is simple and fast to prototype with.
 - Strict JSON output is enforced with a system prompt schema, Pydantic validation, and one retry where the prior error is fed back to the model.
 - Known edge cases handled: JS-redirect pages, parked/expired domains, Cloudflare-style bot walls, and name-only leads with no URL.
-- Known limitations: name-only lead resolution is currently a heuristic guess based on the company-name.com pattern when search-based resolution fails, rather than a true search engine lookup.
-- What I'd improve with more time: real search-based lead resolution, Playwright for more JS-heavy sites, and more robust retry handling for rate limits.
+- Name-only lead resolution now attempts a DuckDuckGo-based lookup with a browser-style user agent and preserves the guessed source URL even when scraping later fails.
+- What I'd improve with more time: Playwright for more JS-heavy sites, richer search fallback strategies, and more robust retry handling for rate limits.
 - The results UI now shows a numbered company list and an explicit B2B Qualification Decision (Yes/No) for each lead.
 
 ## Static output report
