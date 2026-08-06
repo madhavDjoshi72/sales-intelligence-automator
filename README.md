@@ -16,7 +16,7 @@ pip install -r requirements.txt
 echo "GEMINI_API_KEY=your_api_key_here" > .env
 ```
 
-3. Run the web app:
+3. Run the web app with Gemini mode:
 
 ```bash
 python app.py
@@ -39,6 +39,13 @@ python app.py
 
 ```bash
 export GEMINI_MODEL_CANDIDATES="gemini-3-flash-preview,gemini-3.1-flash-lite,gemini-flash-lite-latest"
+python app.py
+```
+
+- If port `5000` is already in use, run the app on a different port:
+
+```bash
+export PORT=5001
 python app.py
 ```
 
